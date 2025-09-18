@@ -276,7 +276,7 @@ def callback_day_copy(call):
     is_change_action_complete(
         call.from_user.id,
         call.message.chat.id,
-        copy_day(
+        lambda: copy_day(
             call.from_user.id,
             day_to, day_from
         )
@@ -369,7 +369,7 @@ def handle_block_entry(message):
 
     if step == BlockStep.DELETE:
         state['data']['index'] = int(message.text)
-        is_change_action_complete(user_id, chat_id, delete_block(
+        is_change_action_complete(user_id, chat_id, lambda: delete_block(
             user_id, day, state['data']['index']))
         refresh_day_view(message.from_user.id,
                          message.chat.id, get_user_session(user_id, 'day_message_id'))
@@ -405,7 +405,7 @@ def handle_block_entry(message):
             if is_end_after_start(state['data']['start'], end):
                 if state['action'] == 'add':
                     is_change_action_complete(user_id, chat_id,
-                                              add_block(
+                                              lambda: add_block(
                                                   user_id=user_id,
                                                   day=day,
                                                   title=state['data']['title'],
@@ -415,7 +415,7 @@ def handle_block_entry(message):
                                      message.chat.id, get_user_session(user_id, 'day_message_id'))
                 elif state['action'] == 'edit':
                     is_change_action_complete(user_id, chat_id,
-                                              edit_block(
+                                              lambda: edit_block(
                                                   user_id=user_id,
                                                   day=day,
                                                   index=state['data']['index'],
